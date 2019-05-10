@@ -15,11 +15,14 @@ class IdGenerator
 {
 
     const TIMESTAMP_SHITF = 16;
-    const SEED_SHITF = 12;
+    const WORKER_SHITF = 12;
+
+    protected $workerId;
 
 
-    public function __construct()
+    public function __construct($workerId = 1)
     {
+        $this->workerId = $workerId;
     }
 
     protected function timestamp()
@@ -31,7 +34,7 @@ class IdGenerator
     {
         $timestamp = $this->timestamp();
         return ($timestamp << self::TIMESTAMP_SHITF)
-            | ($this->getSeed() << self::SEED_SHITF)
+            | ($this->getWorkerId() << self::SEED_SHITF)
             | $this->getCount($timestamp);
     }
 
@@ -39,9 +42,9 @@ class IdGenerator
      * 4bit for seed, 可用于业务和环境区分
      * @return int
      */
-    public function getSeed()
+    public function getWorkerId()
     {
-        return 1;
+        return $this->workerId;
     }
 
     /**
